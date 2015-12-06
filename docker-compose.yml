@@ -1,0 +1,25 @@
+web:
+  build: .
+  env_file: ./docker-compose.env
+  user: "${USERNAME}"
+  command: php app/console server:run 0.0.0.0:9000
+  links:
+    - mysql
+    - solr
+    - redis
+  ports:
+    - '9000:9000'
+  volumes:
+    - .:/code
+    - /etc/passwd:/etc/passwd
+mysql:
+  image: mysql
+  environment:
+    MYSQL_ROOT_PASSWORD: 123456
+    MYSQL_USER: dev
+    MYSQL_PASSWORD: 123456
+    MYSQL_DATABASE: packagist
+solr:
+  image: solr
+redis:
+  image: redis
